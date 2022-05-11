@@ -1,3 +1,3 @@
-Project Name: VAXSYS__
-Course: ADVANCED SOFTWARE ARCHITECTURES (SOEN-6471)__
-Summer 2022__
+Project Name: VAXSYS <br/>
+Course: ADVANCED SOFTWARE ARCHITECTURES (SOEN-6471) <br/>
+Summer 2022 <br/>
