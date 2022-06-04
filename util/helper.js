@@ -11,4 +11,18 @@ module.exports = {
       data: data,
     });
   },
+
+  createHash: async (password) => {
+    return bcrypt.hash(password, constants.PASSWORD_HASH_ROUNDS);
+  },
+
+  compareHash: async (password, hash) => {
+    return bcrypt.compare(password, hash);
+  },
+
+  generateToken: (data) => {
+    return jwt.sign(data, constants.JWT_SECRET, {
+      algorithm: constants.JWT_ALGORITHM,
+    });
+  },
 };

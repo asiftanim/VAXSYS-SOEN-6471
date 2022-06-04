@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config();
+const dotenv = require("dotenv").config();
 const app = require("express")();
 const { sequelize } = require("./connection/database");
 const cors = require("cors");
@@ -7,7 +7,6 @@ const ExeptionMiddleware = require("./middleware/ExceptionMiddleware");
 const config = require("./config");
 const UserRoute = require("./route/UserRoute");
 const AppointmentRoute = require("./route/AppointmentRoute");
-
 
 //-----Middlewares-----//
 
