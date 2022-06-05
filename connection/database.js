@@ -23,11 +23,19 @@ const Vaccine = VaccineModel(sequelize, Sequelize);
 const VaccineCentre = VaccineCentreModel(sequelize, Sequelize);
 
 //Mappings
-Appointment.belongsToMany(User, { through: "user_appointments" });
+// Appointment.belongsToMany(User, { through: "user_appointments" });
+User.hasMany(Appointment);
+Appointment.belongsTo(User);
+
+Vaccine.hasMany(Appointment);
+Appointment.belongsTo(Vaccine)
+
 Vaccine.belongsToMany(User, { through: "user_vaccines" });
-Appointment.hasOne(Vaccine);
-VaccineCentre.hasMany(Vaccine);
+User.belongsToMany(Vaccine, { through: "user_vaccines" });
+
 Vaccine.belongsToMany(VaccineCentre, { through: "vaccine_vaccineCentres" });
+VaccineCentre.belongsToMany(Vaccine, { through: "vaccine_vaccineCentres" });
+
 
 module.exports = {
   sequelize: sequelize,

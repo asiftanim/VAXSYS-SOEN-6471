@@ -2,7 +2,7 @@ module.exports = (sequelize, types) => {
   return sequelize.define(
     "Appointment",
     {
-      appointmentId: {
+      id: {
         type: types.BIGINT,
         primaryKey: true,
         autoIncrement: true,
@@ -13,7 +13,9 @@ module.exports = (sequelize, types) => {
       age: types.BIGINT,
       medications: types.STRING,
       allergies: types.STRING,
-      appointmentStartTime: types.DATE,
+      appointmentDate: types.DATE,
+      appointmentStartTime: types.TIME,
+      appointmentStartEnd: types.TIME,
       isCompleted: types.BOOLEAN,
       createdAt: { type: types.DATE, defaultValue: types.NOW },
     },

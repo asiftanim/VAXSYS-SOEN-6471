@@ -2,7 +2,7 @@ module.exports = (sequelize, types) => {
   return sequelize.define(
     "Vaccine",
     {
-      VaccineId: {
+      id: {
         type: types.BIGINT,
         primaryKey: true,
         autoIncrement: true,

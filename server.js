@@ -7,6 +7,9 @@ const ExeptionMiddleware = require("./middleware/ExceptionMiddleware");
 const config = require("./config");
 const UserRoute = require("./route/UserRoute");
 const AppointmentRoute = require("./route/AppointmentRoute");
+const VaccineCentreRoute = require("./route/VaccineCentreRoute");
+const VaccineRoute = require("./route/VaccineRoute");
+
 
 //-----Middlewares-----//
 
@@ -28,6 +31,8 @@ app.use(cors(corsOptions));
 
 //Application Routes
 app.use("/api/user", UserRoute);
+app.use("/api/vaccinecentre", VaccineCentreRoute);
+app.use("/api/vaccine", VaccineRoute);
 app.use("/api/appointment", AppointmentRoute);
 
 //Error handling middleware
