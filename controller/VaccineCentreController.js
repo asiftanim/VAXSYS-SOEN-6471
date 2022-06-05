@@ -1,7 +1,20 @@
-const { VaccineCentre, Vaccine } = require("./../connection/database");
+const {
+  VaccineCentre,
+  Vaccine,
+  Appointment,
+  Op,
+} = require("./../connection/database");
 const constants = require("../util/constants");
 const message = require("../util/message");
 const helper = require("./../util/helper");
+const moment = require("moment");
+const config = require("../config");
+
+function getEndTime(startTime) {
+  return moment(startTime, "HH:mm:ss")
+    .add(config.APPOINTMENT_DURATION, "minutes")
+    .format("HH:mm:ss");
+}
 
 module.exports = {
   createVaccineCenter: async (req, res, next) => {
@@ -73,7 +86,12 @@ module.exports = {
         {}
       );
     } catch (err) {
-      console.log(__filename, "addVaccineToVaccineCentre()", err.message, err.stack);
+      console.log(
+        __filename,
+        "addVaccineToVaccineCentre()",
+        err.message,
+        err.stack
+      );
       next(err);
     }
   },
@@ -82,7 +100,9 @@ module.exports = {
     try {
       let { vaccineCentreId } = req.params;
       let vaccineCentre = await VaccineCentre.findByPk(vaccineCentreId);
-      let vaccineList = await vaccineCentre.getVaccines();
+      let vaccineList = await vaccineCentre.getVaccines({
+        joinTableAttributes: [],
+      });
       helper.createResponse(
         res,
         constants.SUCCESS,
@@ -90,7 +110,56 @@ module.exports = {
         vaccineList
       );
     } catch (err) {
-      console.log(__filename, "getVaccinesByVaccineCentre()", err.message, err.stack);
+      console.log(
+        __filename,
+        "getVaccinesByVaccineCentre()",
+        err.message,
+        err.stack
+      );
+      next(err);
+    }
+  },
+
+  getAvailableSlots: async (req, res, next) => {
+    try {
+      let { vaccineCentreId } = req.params;
+      let vaccineCentre = await VaccineCentre.findByPk(vaccineCentreId);
+      let appointmentList = [];
+      if (!vaccineCentre) {
+        throw new BaseException(
+          message.DOES_NOT_EXIST("Vaccine Centre"),
+          constants.BAD_REQUEST
+        );
+      }
+      appointmentList = await vaccineCentre.getAppointments({
+        joinTableAttributes: [],
+      });
+      letStartTimes = appointmentList.map(
+        (appointment) => appointment.appointmentStartTime
+      );
+      let availableSlotList = [];
+      let tempStartTime = moment(vaccineCentre.startTime, "HH:mm:ss").format("HH:mm:ss");
+      while (
+        moment(getEndTime(tempStartTime), "HH:mm:ss").isSameOrBefore(
+          moment(vaccineCentre.endTime, "HH:mm:ss")
+        )
+      ) {
+        if (!letStartTimes.includes(tempStartTime)) {
+          availableSlotList.push({
+            startTime: tempStartTime,
+            endTime: getEndTime(tempStartTime),
+          });
+        }
+        tempStartTime = getEndTime(tempStartTime);
+      }
+      helper.createResponse(
+        res,
+        constants.SUCCESS,
+        message.FETCHED_SUCCESSFULLY("Available slots"),
+        availableSlotList
+      );
+    } catch (err) {
+      console.log(__filename, "getAvailableSlots()", err.message, err.stack);
       next(err);
     }
   },

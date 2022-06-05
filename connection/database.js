@@ -30,6 +30,9 @@ Appointment.belongsTo(User);
 Vaccine.hasMany(Appointment);
 Appointment.belongsTo(Vaccine)
 
+VaccineCentre.hasMany(Appointment);
+Appointment.belongsTo(VaccineCentre)
+
 Vaccine.belongsToMany(User, { through: "user_vaccines" });
 User.belongsToMany(Vaccine, { through: "user_vaccines" });
 

@@ -15,7 +15,7 @@ module.exports = (sequelize, types) => {
       allergies: types.STRING,
       appointmentDate: types.DATE,
       appointmentStartTime: types.TIME,
-      appointmentStartEnd: types.TIME,
+      appointmentEndTime: types.TIME,
       isCompleted: types.BOOLEAN,
       createdAt: { type: types.DATE, defaultValue: types.NOW },
     },

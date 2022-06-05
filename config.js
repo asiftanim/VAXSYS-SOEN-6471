@@ -9,4 +9,7 @@ module.exports = {
   DATABASE: "vaxsys",
   DB_HOST: "127.0.0.1",
   DB_DIALECT: "mysql",
+
+  //APPOINTMENT
+  APPOINTMENT_DURATION: 30
 };
