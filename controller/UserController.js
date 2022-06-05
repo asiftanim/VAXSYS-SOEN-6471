@@ -14,6 +14,7 @@ module.exports = {
         lastName: lastName,
         email: email,
         password: password,
+        role: 2
       });
       helper.createResponse(
         res,

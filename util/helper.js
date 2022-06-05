@@ -25,4 +25,13 @@ module.exports = {
       algorithm: constants.JWT_ALGORITHM,
     });
   },
+
+  verifyToken: async (token) => {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, constants.JWT_SECRET, (err, decoded) => {
+        if (err) reject(err);
+        else resolve(decoded);
+      })
+    })
+  },
 };

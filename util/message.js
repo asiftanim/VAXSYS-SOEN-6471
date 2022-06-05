@@ -19,7 +19,7 @@ module.exports = {
   REGISTRATION_SUCCESSFUL: "User registered successfully",
   USER_NOT_FOUND: "Incorrect email/password",
   LOGIN_SUCCESSFUL: "Login Successful",
-
+  UNAUTHORIZED_ACCESS: "Unauthorized Access",
   //Error
   SERVER_ERROR_MESSAGE: "Server Error",
 
