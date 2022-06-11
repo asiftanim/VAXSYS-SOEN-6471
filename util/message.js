@@ -15,6 +15,10 @@ module.exports = {
   DOES_NOT_EXIST: (entity) => {
     return entity + "  does not exist"
   },
+
+  UPDATED_SUCCESSFULLY: (entity) => {
+    return entity + " updated successfully"
+  },
   //User
   REGISTRATION_SUCCESSFUL: "User registered successfully",
   USER_NOT_FOUND: "Incorrect email/password",

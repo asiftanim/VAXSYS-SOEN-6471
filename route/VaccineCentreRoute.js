@@ -1,13 +1,13 @@
 const router = require("express").Router();
-const { userAuthMiddleware, AdminAuthMiddleware } = require("../middleware/AuthMiddleware");
+const { UserAuthMiddleware, AdminAuthMiddleware } = require("../middleware/AuthMiddleware");
 const VaccineCentreController = require("./../controller/VaccineCentreController");
 
 router.post("/", AdminAuthMiddleware, VaccineCentreController.createVaccineCenter);
-router.get("/", userAuthMiddleware, VaccineCentreController.getVaccineCentres);
+router.get("/", UserAuthMiddleware, VaccineCentreController.getVaccineCentres);
 router.post("/vaccine", AdminAuthMiddleware, VaccineCentreController.addVaccineToVaccineCentre)
-router.get("/:vaccineCentreId/slots", userAuthMiddleware, VaccineCentreController.getAvailableSlots);
-router.get("/:vaccineCentreId/vaccine", userAuthMiddleware, VaccineCentreController.getVaccinesByVaccineCentre);
-router.get("/:vaccineCentreId", userAuthMiddleware, VaccineCentreController.getVaccineCentre);
+router.get("/:vaccineCentreId/slots", UserAuthMiddleware, VaccineCentreController.getAvailableSlots);
+router.get("/:vaccineCentreId/vaccine", UserAuthMiddleware, VaccineCentreController.getVaccinesByVaccineCentre);
+router.get("/:vaccineCentreId", UserAuthMiddleware, VaccineCentreController.getVaccineCentre);
 
 
 

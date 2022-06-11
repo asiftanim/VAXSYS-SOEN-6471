@@ -130,4 +130,24 @@ module.exports = {
       next(err);
     }
   },
+
+  completeAppointment: async (req, res, next) => {
+    try {
+      let { appointmentId } = req.params;
+      let appointment = await Appointment.findByPk(appointmentId);
+      appointment.isCompleted = true;
+      await appointment.save();
+      helper.createResponse(
+        res,
+        constants.SUCCESS,
+        message.UPDATED_SUCCESSFULLY("Appointment"),
+        {
+          appointmentId: appointmentId
+        }
+      );
+    } catch (err) {
+      console.log(__filename, "completeAppointment()", err.message, err.stack);
+      next(err);
+    }
+  },
 };

@@ -1,8 +1,8 @@
 const VaccineController = require("../controller/VaccineController");
-const { userAuthMiddleware, AdminAuthMiddleware } = require("../middleware/AuthMiddleware");
+const { UserAuthMiddleware, AdminAuthMiddleware } = require("../middleware/AuthMiddleware");
 
 const router = require("express").Router();
 router.post("/", AdminAuthMiddleware, VaccineController.createVaccine);
-router.get("/", userAuthMiddleware, VaccineController.getVaccines);
-router.get("/:vaccineId", userAuthMiddleware, VaccineController.getVaccine);
+router.get("/", UserAuthMiddleware, VaccineController.getVaccines);
+router.get("/:vaccineId", UserAuthMiddleware, VaccineController.getVaccine);
 module.exports = router;

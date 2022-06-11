@@ -131,7 +131,11 @@ module.exports = {
           constants.BAD_REQUEST
         );
       }
+      let date = new Date(req.query.date).setHours(00, 00, 00) ? req.query.date : new Date().setHours(00, 00, 00);
       appointmentList = await vaccineCentre.getAppointments({
+        where: {
+          appointmentDate: date
+        },
         joinTableAttributes: [],
       });
       letStartTimes = appointmentList.map(
