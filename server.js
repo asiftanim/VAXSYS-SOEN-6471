@@ -13,16 +13,6 @@ const VaccineRoute = require("./route/VaccineRoute");
 
 //-----Middlewares-----//
 
-//
-app.use(cors())
-
-//To parse body of requests
-app.use(bodyParser.urlencoded({ extended: true })); // extended false will accept only string and array
-app.use(bodyParser.json());
-
-//To remove the powered by header
-app.disable("x-powered-by");
-
 //To enable CORS
 let corsOptions = {
   origin: "*",
@@ -31,6 +21,13 @@ let corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+//To parse body of requests
+app.use(bodyParser.urlencoded({ extended: true })); // extended false will accept only string and array
+app.use(bodyParser.json());
+
+//To remove the powered by header
+app.disable("x-powered-by");
 
 //Application Routes
 app.use("/api/user", UserRoute);

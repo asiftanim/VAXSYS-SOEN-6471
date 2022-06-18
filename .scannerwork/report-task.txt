@@ -1,0 +1,6 @@
+projectKey=VAXSYS
+serverUrl=http://localhost:9000
+serverVersion=9.5.0.56709
+dashboardUrl=http://localhost:9000/dashboard?id=VAXSYS
+ceTaskId=AYF0Po89tlqN6W8o3Yjc
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYF0Po89tlqN6W8o3Yjc
