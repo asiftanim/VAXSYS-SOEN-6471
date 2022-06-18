@@ -8,7 +8,8 @@ module.exports = {
         try {
             const { authorization } = req.headers;
             let decoded = await helper.verifyToken(authorization.split(' ')[1]);
-            if (decoded && decoded.email && (decoded.role === constants.ROLE_USER || decoded.role === constants.ROLE_ADMIN)) {
+            if (decoded && decoded.email && decoded.id && (decoded.role === constants.ROLE_USER || decoded.role === constants.ROLE_ADMIN)) {
+                req.user = decoded;
                 next();
             } else {
                 throw new BaseException(message.UNAUTHORIZED_ACCESS, constants.UNAUTHORIZED);
@@ -25,6 +26,7 @@ module.exports = {
             const { authorization } = req.headers;
             let decoded = await helper.verifyToken(authorization.split(' ')[1]);
             if (decoded && decoded.email && decoded.role === constants.ROLE_ADMIN) {
+                req.user = decoded;
                 next();
             } else {
                 throw new BaseException(message.UNAUTHORIZED_ACCESS, constants.UNAUTHORIZED);

@@ -13,8 +13,11 @@ const VaccineRoute = require("./route/VaccineRoute");
 
 //-----Middlewares-----//
 
+//
+app.use(cors())
+
 //To parse body of requests
-app.use(bodyParser.urlencoded({ extended: false })); // extended false will accept only string and array
+app.use(bodyParser.urlencoded({ extended: true })); // extended false will accept only string and array
 app.use(bodyParser.json());
 
 //To remove the powered by header

@@ -44,12 +44,33 @@ module.exports = {
 
   getVaccineCentres: async (req, res, next) => {
     try {
-      let vaccineCentreList = await VaccineCentre.findAll();
+      let vaccineCentreList = await VaccineCentre.findAll({
+        include: [
+          {
+            model: Vaccine,
+            attributes: ["category"],
+            through: {
+              attributes: [],
+            }
+          }]
+      });
+      returnList = [];
+      vaccineCentreList.forEach(vaccineCentreSequelize => {
+        let vaccineCentre = vaccineCentreSequelize.dataValues
+        let vaccineCategoryMap = {};
+        vaccineCentre.Vaccines.forEach(vaccine => {
+          vaccineCategoryMap[vaccine.category] = 1;
+        });
+        vaccineCentre.categories = Object.keys(vaccineCategoryMap);
+        delete vaccineCentre.Vaccines;
+        console.log(vaccineCentre)
+        returnList.push(vaccineCentre);
+      })
       helper.createResponse(
         res,
         constants.SUCCESS,
         message.FETCHED_SUCCESSFULLY("Vaccine Centres"),
-        vaccineCentreList
+        returnList
       );
     } catch (err) {
       console.log(__filename, "getVaccineCentres()", err.message, err.stack);
@@ -99,9 +120,14 @@ module.exports = {
   getVaccinesByVaccineCentre: async (req, res, next) => {
     try {
       let { vaccineCentreId } = req.params;
+      let whereCondition = {};
+      if (req.query.category) {
+        whereCondition = { category: req.query.category }
+      }
       let vaccineCentre = await VaccineCentre.findByPk(vaccineCentreId);
       let vaccineList = await vaccineCentre.getVaccines({
         joinTableAttributes: [],
+        where: whereCondition
       });
       helper.createResponse(
         res,

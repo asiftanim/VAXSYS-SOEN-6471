@@ -8,6 +8,15 @@ module.exports = {
   register: async (req, res, next) => {
     try {
       let { firstName, lastName, email, password } = req.body;
+      let user = await User.findOne({
+        where: { email: email },
+      });
+      if (user) {
+        throw new BaseException(
+          message.ALREADY_EXISTS("User"),
+          constants.BAD_REQUEST
+        );
+      }
       password = await helper.createHash(password);
       await User.create({
         firstName: firstName,
@@ -30,6 +39,7 @@ module.exports = {
 
   login: async (req, res, next) => {
     try {
+      console.log(req.body);
       let { email, password } = req.body;
       let user = await User.findOne({
         where: { email: email },
@@ -48,7 +58,7 @@ module.exports = {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        token: helper.generateToken({ email: user.email, role: user.role }),
+        token: helper.generateToken({ email: user.email, role: user.role, id: user.id, firstName: user.firstName, lastName: user.lastName }),
         role: user.role,
       };
 

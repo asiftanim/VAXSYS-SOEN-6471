@@ -18,8 +18,6 @@ module.exports = {
       let {
         vaccineCentreId,
         vaccineId,
-        firstName,
-        lastName,
         address,
         age,
         medications,
@@ -66,8 +64,8 @@ module.exports = {
       }
 
       let appointment = await Appointment.create({
-        firstName: firstName,
-        lastName: lastName,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
         address: address,
         age: age,
         medications: medications,
@@ -78,6 +76,7 @@ module.exports = {
         VaccineCentreId: vaccineCentreId,
         VaccineId: vaccineId,
         isCompleted: false,
+        UserId: req.user.id
       });
 
       helper.createResponse(
@@ -97,9 +96,14 @@ module.exports = {
       let { vaccineCentreId } = req.query;
       let vaccineCentre = await VaccineCentre.findByPk(vaccineCentreId);
       let appointmentList = [];
+      let date = new Date(req.query.date).setHours(00, 00, 00) ? req.query.date : new Date().setHours(00, 00, 00);
       if (vaccineCentre) {
         appointmentList = await vaccineCentre.getAppointments({
           joinTableAttributes: [],
+          where: {
+            isCompleted: false,
+            appointmentDate: date
+          }
         });
       }
 
@@ -133,8 +137,8 @@ module.exports = {
 
   completeAppointment: async (req, res, next) => {
     try {
-      let { appointmentId } = req.params;
-      let appointment = await Appointment.findByPk(appointmentId);
+      let { id } = req.body;
+      let appointment = await Appointment.findByPk(id);
       appointment.isCompleted = true;
       await appointment.save();
       helper.createResponse(
@@ -142,7 +146,7 @@ module.exports = {
         constants.SUCCESS,
         message.UPDATED_SUCCESSFULLY("Appointment"),
         {
-          appointmentId: appointmentId
+          id: id
         }
       );
     } catch (err) {
